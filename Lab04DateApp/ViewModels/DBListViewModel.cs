@@ -7,6 +7,7 @@ using System.Windows.Data;
 using JetBrains.Annotations;
 using KMA.ProgrammingInCSharp2019.Lab01.DateApp.Models;
 using KMA.ProgrammingInCSharp2019.Lab01.DateApp.Tools;
+using KMA.ProgrammingInCSharp2019.Lab01.DateApp.Tools.Managers;
 using KMA.ProgrammingInCSharp2019.Lab01.DateApp.Views;
 
 namespace KMA.ProgrammingInCSharp2019.Lab01.DateApp.ViewModels
@@ -141,15 +142,19 @@ namespace KMA.ProgrammingInCSharp2019.Lab01.DateApp.ViewModels
 
         private async void DeletePerson(object o)
         {
+            LoaderManeger.Instance.ShowLoader();
             await Task.Run((() =>
             {
                 _persons.Remove(SelectedPerson);
                 UpdatePersonsGrid();
             }));
+            LoaderManeger.Instance.HideLoader();
         }
 
         private void EditPerson(object o)
         {
+
+            LoaderManeger.Instance.ShowLoader();
             var personToEdit = _selectedPerson;
             var editWindow = new InputWindow(delegate(Person edited)
             {
@@ -157,10 +162,12 @@ namespace KMA.ProgrammingInCSharp2019.Lab01.DateApp.ViewModels
                 UpdatePersonsGrid();
             }, _selectedPerson);
             editWindow.Show();
+            LoaderManeger.Instance.HideLoader();
         }
 
         private async void SortPersonsList(object o)
         {
+            LoaderManeger.Instance.ShowLoader();
             await Task.Run(() =>
             {
                 _persons = _persons.SortByProperty(SelectedFilterProperty, _isSortedAsc);
@@ -168,6 +175,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab01.DateApp.ViewModels
                 _isSortedAsc = !_isSortedAsc;
                 UpdatePersonsGrid();
             });
+            LoaderManeger.Instance.HideLoader();
         }
 
         #endregion
